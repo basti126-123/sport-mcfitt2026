@@ -1,628 +1,727 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>McFITT 2026 - Mon Programme</title>
-<style>
-:root {
-  --bg: #0f1419;
-  --card: #1a1f2e;
-  --card-hover: #232b3f;
-  --tx: #e8ecf1;
-  --tx-secondary: #a0aac5;
-  --accent: #00d9ff;
-  --accent-hover: #00b8d4;
-  --success: #00e676;
-  --success-light: #4caf50;
-  --warning: #ff6b35;
-  --bd: #2a3342;
-  --shadow: 0 8px 32px rgba(0, 217, 255, 0.15);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: env(safe-area-inset-top, 0px);
-}
-
-body {
-  margin: 0;
-  background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
-  color: var(--tx);
-  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  -webkit-tap-highlight-color: transparent;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-}
-
-main {
-  max-width: 540px;
-  margin: 0 auto;
-  padding: 24px 16px 60px;
-}
-
-h1 {
-  font-size: 32px;
-  margin: 0 0 8px;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), #00b8d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-h2 {
-  font-size: 18px;
-  margin: 28px 0 14px;
-  font-weight: 600;
-  color: var(--tx);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.9;
-}
-
-.sub {
-  color: var(--tx-secondary);
-  margin: 0 0 20px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 24px;
-  background: var(--card);
-  padding: 6px;
-  border-radius: 14px;
-  border: 1px solid var(--bd);
-}
-
-.tabs button {
-  flex: 1;
-  padding: 12px 16px;
-  border-radius: 10px;
-  border: none;
-  background: transparent;
-  color: var(--tx-secondary);
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 13px;
-}
-
-.tabs button:hover {
-  color: var(--tx);
-}
-
-.tabs button.on {
-  background: linear-gradient(135deg, var(--accent), #00b8d4);
-  color: #0f1419;
-  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
-}
-
-.day,
-.ex,
-.rec,
-.mac {
-  background: var(--card);
-  border: 1px solid var(--bd);
-  border-radius: 16px;
-  margin-bottom: 12px;
-  color: var(--tx);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.day:hover,
-.ex:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow);
-  transform: translateY(-2px);
-}
-
-.day,
-.ex {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  text-align: left;
-  padding: 16px;
-  font: inherit;
-  cursor: pointer;
-}
-
-.day b {
-  display: block;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.day small {
-  color: var(--tx-secondary);
-  font-size: 13px;
-  margin-top: 4px;
-}
-
-.day .g {
-  flex: 1;
-}
-
-.badge {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--accent);
-  white-space: nowrap;
-  background: rgba(0, 217, 255, 0.1);
-  padding: 6px 12px;
-  border-radius: 20px;
-}
-
-.today {
-  border-color: var(--accent);
-  box-shadow: var(--shadow);
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 184, 212, 0.05));
-}
-
-.rest {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.rest:hover {
-  border-color: var(--bd);
-  box-shadow: none;
-  transform: none;
-}
-
-.back {
-  background: none;
-  border: 0;
-  color: var(--accent);
-  font: inherit;
-  font-weight: 600;
-  padding: 8px 0;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s;
-  margin-bottom: 16px;
-}
-
-.back:hover {
-  color: var(--accent-hover);
-}
-
-.bar {
-  height: 10px;
-  background: var(--bd);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 16px 0 24px;
-  border: 1px solid var(--bd);
-}
-
-.bar i {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--success), var(--success-light));
-  width: 0;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
-}
-
-.ico {
-  font-size: 32px;
-  width: 56px;
-  height: 56px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 184, 212, 0.05));
-  border-radius: 14px;
-  flex: none;
-  border: 1px solid var(--bd);
-}
-
-.ex .g {
-  flex: 1;
-}
-
-.ex b {
-  font-size: 16px;
-  display: block;
-  font-weight: 600;
-}
-
-.ex .m {
-  color: var(--accent);
-  font-weight: 600;
-  font-size: 13px;
-  margin: 4px 0 2px;
-}
-
-.ex .t {
-  color: var(--tx-secondary);
-  font-size: 13px;
-  line-height: 1.5;
-  margin-top: 4px;
-}
-
-.chk {
-  width: 32px;
-  height: 32px;
-  border: 2.5px solid var(--accent);
-  border-radius: 50%;
-  flex: none;
-  display: grid;
-  place-items: center;
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.ex.done {
-  opacity: 0.6;
-  border-color: var(--success);
-}
-
-.ex.done b {
-  text-decoration: line-through;
-  color: var(--tx-secondary);
-}
-
-.ex.done .chk {
-  background: linear-gradient(135deg, var(--success), var(--success-light));
-  border-color: var(--success);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3);
-}
-
-.note {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.05));
-  border-left: 4px solid var(--warning);
-  border-radius: 12px;
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  border: 1px solid var(--bd);
-  color: var(--tx);
-}
-
-.reset {
-  margin-top: 24px;
-  background: none;
-  border: 1.5px solid var(--bd);
-  color: var(--tx-secondary);
-  border-radius: 12px;
-  padding: 12px 16px;
-  font: inherit;
-  cursor: pointer;
-  width: 100%;
-  transition: all 0.3s;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.reset:hover {
-  border-color: var(--warning);
-  color: var(--warning);
-  background: rgba(255, 107, 53, 0.05);
-}
-
-.macs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.mac {
-  padding: 16px 12px;
-  text-align: center;
-  margin: 0;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 184, 212, 0.05));
-  border: 1px solid var(--bd);
-}
-
-.mac b {
-  display: block;
-  font-size: 18px;
-  color: var(--accent);
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.mac small {
-  color: var(--tx-secondary);
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.rec {
-  padding: 0;
-}
-
-.rec summary {
-  list-style: none;
-  padding: 16px;
-  cursor: pointer;
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  transition: all 0.3s;
-}
-
-.rec summary::-webkit-details-marker {
-  display: none;
-}
-
-.rec[open] summary {
-  background: rgba(0, 217, 255, 0.05);
-  border-bottom: 1px solid var(--bd);
-}
-
-.rec .g {
-  flex: 1;
-}
-
-.rec b {
-  display: block;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.rec small {
-  color: var(--tx-secondary);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.rec .in {
-  padding: 0 16px 16px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--tx-secondary);
-}
-
-.rec ul,
-.rec ol {
-  margin: 8px 0 12px;
-  padding-left: 24px;
-  color: var(--tx);
-}
-
-.rec li {
-  margin-bottom: 6px;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.chips span {
-  background: var(--card);
-  border: 1px solid var(--bd);
-  border-radius: 22px;
-  padding: 8px 14px;
-  font-size: 13px;
-  color: var(--tx-secondary);
-  transition: all 0.3s;
-}
-
-.chips span:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(0, 217, 255, 0.05);
-}
-
-.gif {
-  width: 84px;
-  height: 84px;
-  flex: none;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(0, 184, 212, 0.05));
-  border-radius: 14px;
-  border: 1px solid var(--bd);
-}
-
-.gif path,
-.gif line {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.gif .bd {
-  stroke: var(--accent);
-  stroke-width: 4;
-}
-
-.gif .lg2 {
-  stroke: var(--tx-secondary);
-  stroke-width: 4;
-}
-
-.gif .pl {
-  stroke: var(--accent);
-  stroke-width: 3;
-}
-
-.gif .fl {
-  stroke: var(--bd);
-  stroke-width: 2;
-}
-
-.gif .hd {
-  fill: var(--accent);
-}
-
-.gif .wt {
-  fill: var(--success);
-}
-
-@media (max-width: 600px) {
-  h1 {
-    font-size: 28px;
-  }
-
-  main {
-    padding: 16px 12px 60px;
-  }
-
-  .day,
-  .ex {
-    padding: 14px;
-    gap: 12px;
-  }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>McFITT 2026</title>
+  <style>
+    :root {
+      --bg: #071018;
+      --bg2: #101a26;
+      --card: rgba(18, 26, 39, 0.9);
+      --card-strong: #131f2f;
+      --muted: #8fa3bf;
+      --text: #edf4ff;
+      --accent: #5ee6ff;
+      --accent-2: #00c2ff;
+      --success: #41f0a4;
+      --success-2: #2fcf87;
+      --warning: #ff9f4a;
+      --line: rgba(255,255,255,0.07);
+      --shadow: 0 20px 50px rgba(0, 194, 255, 0.15);
+      --glow: 0 0 18px rgba(94, 230, 255, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 18px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(0,194,255,0.22), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(65,240,164,0.12), transparent 32%),
+        linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+      -webkit-tap-highlight-color: transparent;
+      letter-spacing: 0.15px;
+    }
+
+    main {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 18px 14px 72px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, rgba(24,36,52,0.9), rgba(10,17,26,0.95));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 22px 18px 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -40% auto auto -30%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(94,230,255,0.32), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -28%;
+      bottom: -28%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(65,240,164,0.16), transparent 60%);
+      pointer-events: none;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand .badge {
+      background: rgba(94,230,255,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(94,230,255,0.25);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(28px, 7vw, 38px);
+      margin: 16px 0 8px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      position: relative;
+      z-index: 1;
+      font-weight: 800;
+      background: linear-gradient(135deg, #eafcff 0%, #9beafc 30%, #5ee6ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+
+    .stat small {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0 18px;
+      background: rgba(17, 25, 36, 0.9);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 6px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .tabs button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 12px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tabs button.on {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #05141c;
+      box-shadow: var(--glow);
+    }
+
+    .day,
+    .ex,
+    .rec,
+    .mac {
+      background: rgba(17, 25, 36, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      color: var(--text);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .day:hover,
+    .ex:hover,
+    .rec:hover,
+    .mac:hover {
+      border-color: rgba(94,230,255,0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 28px rgba(0,0,0,0.18);
+    }
+
+    .day,
+    .ex {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+      padding: 15px 14px;
+      font: inherit;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .day .g,
+    .ex .g,
+    .rec .g {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .day b,
+    .rec b {
+      display: block;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .day small,
+    .rec small {
+      color: var(--muted);
+      font-size: 12px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .badge {
+      background: rgba(94,230,255,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(94,230,255,0.2);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 7px 9px;
+      letter-spacing: 0.7px;
+      white-space: nowrap;
+    }
+
+    .today {
+      border-color: rgba(94,230,255,0.5);
+      background: linear-gradient(135deg, rgba(94,230,255,0.05), rgba(17,25,36,0.94));
+      box-shadow: var(--shadow);
+    }
+
+    .rest {
+      opacity: 0.56;
+      cursor: default;
+    }
+
+    .rest:hover {
+      transform: none;
+      border-color: var(--line);
+      box-shadow: none;
+    }
+
+    .back {
+      margin: 4px 0 14px;
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .bar {
+      height: 11px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 14px 0 18px;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--success), var(--success-2));
+      box-shadow: 0 0 16px rgba(65,240,164,0.3);
+      transition: width 0.35s ease;
+    }
+
+    .ico {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(94,230,255,0.12), rgba(0,194,255,0.04));
+      font-size: 30px;
+      flex: none;
+      border: 1px solid rgba(94,230,255,0.18);
+    }
+
+    .ex .m {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      margin: 4px 0 2px;
+    }
+
+    .ex .t {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .chk {
+      width: 30px;
+      height: 30px;
+      border: 2px solid rgba(94,230,255,0.6);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-weight: 800;
+      flex: none;
+      background: rgba(94,230,255,0.03);
+      transition: all 0.2s ease;
+    }
+
+    .ex.done {
+      opacity: 0.68;
+      border-color: rgba(65,240,164,0.45);
+    }
+
+    .ex.done b {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .ex.done .chk {
+      background: linear-gradient(135deg, var(--success), var(--success-2));
+      border-color: transparent;
+      color: #06110e;
+      box-shadow: 0 8px 16px rgba(65,240,164,0.25);
+    }
+
+    .note {
+      border: 1px solid rgba(255,159,74,0.2);
+      background: rgba(255,159,74,0.05);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .reset {
+      margin-top: 22px;
+      width: 100%;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .reset:hover {
+      border-color: rgba(255,159,74,0.4);
+      color: var(--warning);
+      background: rgba(255,159,74,0.04);
+    }
+
+    .macs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mac {
+      padding: 12px 8px;
+      text-align: center;
+      margin: 0;
+      background: linear-gradient(160deg, rgba(94,230,255,0.04), rgba(18,26,39,0.8));
+    }
+
+    .mac b {
+      display: block;
+      color: var(--accent);
+      font-size: 18px;
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+
+    .mac small {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .rec {
+      padding: 0;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .rec summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 12px;
+      cursor: pointer;
+    }
+
+    .rec summary::-webkit-details-marker { display: none; }
+
+    .rec[open] summary {
+      background: rgba(94,230,255,0.03);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rec .in {
+      padding: 0 16px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .rec .in ul,
+    .rec .in ol {
+      margin: 7px 0 12px;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .rec .in li { margin-bottom: 5px; }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 6px;
+    }
+
+    .chips span {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .gif {
+      width: 84px;
+      height: 84px;
+      flex: none;
+      background: linear-gradient(135deg, rgba(94,230,255,0.05), rgba(18,26,39,0.8));
+      border: 1px solid rgba(94,230,255,0.18);
+      border-radius: 16px;
+    }
+
+    .gif path, .gif line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .gif .bd { stroke: var(--accent); stroke-width: 4; }
+    .gif .lg2 { stroke: var(--muted); stroke-width: 4; }
+    .gif .pl { stroke: var(--accent); stroke-width: 3; }
+    .gif .fl { stroke: rgba(255,255,255,0.12); stroke-width: 2; }
+    .gif .hd { fill: var(--accent); }
+    .gif .wt { fill: var(--success); }
+
+    @media (max-width: 440px) {
+      .stats { grid-template-columns: 1fr; }
+      .macs { grid-template-columns: 1fr; }
+      .tabs { gap: 6px; }
+    }
+  </style>
 </head>
 <body>
-<main id="app"></main>
-<script>
-// [nom, séries, poids, commentaire, icône]
-var P=[
-{d:"Lundi",w:0,t:"Fessiers - ischios",e:[
-["Hip thrust","4×10 (1×12 + 3×8)","25 kg","","🍑"],
-["RDL","4×8-10","25 kg","","⬇️"],
-["Sumo squat","3×10","","","🏋️"],
-["Leg curl","4×10","36-41 kg","","〰️"],
-["Kick back","3×12","","Abduction si le kick back n'est pas possible.","🦶"],
-["Fentes bulgares","","","","🦵"]]},
-{d:"Mardi",w:1,t:"Haut du corps (dos, épaules, biceps)",n:"Ne jamais fermer le pouce.",e:[
-["Lat pulldown","4×8-10","41,3 kg","Assis, tirage bras latéral. Écarter un max le pouce et le rapprocher du poing, sans le fermer.","🔽"],
-["Seated row","4×8-10","25 kg","Tirer vers soi, assise, sans bouger le corps.","🚣"],
-["Biceps assis sur banc","3×10","7 kg / main","","💪"],
-["Hammer curl (ou)","4×10","11,3 kg","À la poulie avec la corde.","🔨"],
-["Barre à poids en vague","4×10","10 kg","Bras collés au corps, cible les biceps.","〰️"],
-["Câble face pull","4×10","","Cible le dos.","🎯"],
-["Arm pull-over","3×10","","Reculer, se pencher vers l'avant, bras tendus avec une barre sur la poulie, ramener vers soi en arc.","🏹"]]},
-{d:"Mercredi",w:2,t:"Repos",r:1},
-{d:"Jeudi",w:3,t:"Fessiers (4-5 exos)",e:[
-["Abducteurs","3×12-16 (6-8 penchée + 6-8 droite)","39 kg","Se pencher vers l'avant.","↔️"],
-["Hip thrust","4×10 (1×12 + 3×8)","20 kg","","🍑"],
-["RDL","4×8-10","","","⬇️"],
-["Fentes bulgares","3×8-10","","","🦵"],
-["Kick back","3×8-10","","","🦶"],
-["Leg curl (ou)","4×10","36 kg","","〰️"],
-["Presse","4×10","79 kg","Pieds hauts.","🦿"],
-["Step up à la poulie","","","","🪜"]]},
-{d:"Vendredi",w:4,t:"Cardio - abdos",e:[
-["Marche","30 min","","Paliers 6 - 8 - 10 - 12.","🚶"],
-["Crunch abdos","50 reps","","","🔥"],
-["Lève-jambes","","","","🦵"]]},
-{d:"Samedi",w:5,t:"Bas du corps (full leg)",e:[
-["Presse","4×10","","","🦿"],
-["Squat","3×8-10","","","🏋️"],
-["Fentes bulgares","3×10","","","🦵"],
-["Gobelet squat","3×12-15","","Pied surélevé avec un poids.","🥤"],
-["Leg extension","3×10-12","","","📐"],
-["Leg curl (inverse)","3×10-12","","","〰️"]]},
-{d:"Variante",w:-1,t:"Dos - biceps",e:[
-["Lat pulldown","3×8-10","","Ne pas tenir avec les pouces.","🔽"],
-["Seated câble","3×8-10","28 kg","Tirer vers soi.","🚣"],
-["Back extension","3×10-12","","Avec un poids, remonter bien droite.","🧎"],
-["Arm pull-over","2×12-15","","Corde sur la poulie, reculer, tirer vers le bas, serrer avec les mains.","🏹"],
-["Câble face pull","2×12-15","","Tirer vers la tête, sur les côtés.","🎯"]]}
-];
-// [titre, moment, kcal, P, G, L, ingrédients, étapes, icône]
-var R=[
-["Porridge banane-amandes","Petit-déjeuner",480,17,75,12,["60 g de flocons d'avoine","250 ml de lait","1 banane","15 g d'amandes","Cannelle"],["Chauffer l'avoine avec le lait 4-5 min en remuant.","Ajouter la banane en rondelles, les amandes et la cannelle."],"🥣"],
-["Omelette avocat-pain","Petit-déjeuner",600,26,30,40,["3 œufs","½ avocat","2 tranches de pain","Sel, poivre"],["Battre les œufs et cuire l'omelette à la poêle.","Servir avec l'avocat écrasé sur le pain grillé."],"🍳"],
-["Bowl poulet-riz","Midi",590,48,65,14,["150 g de poulet (cru)","80 g de riz (cru)","Légumes au choix","1 c. à s. d'huile d'olive"],["Cuire le riz.","Saisir le poulet en morceaux dans l'huile 8-10 min.","Assembler avec les légumes."],"🍚"],
-["Pâtes au thon","Midi",560,38,70,10,["90 g de pâtes (cru)","1 boîte de thon au naturel","Tomates","1 c. à c. d'huile d'olive"],["Cuire les pâtes.","Mélanger avec le thon émietté, les tomates et l'huile."],"🍝"],
-["Saumon et pommes de terre","Soir",540,30,55,20,["130 g de saumon","300 g de pommes de terre","Haricots verts"],["Cuire les pommes de terre à l'eau ou au four 25 min.","Cuire le saumon 8-10 min à la poêle ou au four.","Servir avec les haricots verts."],"🐟"],
-["Poulet et pommes de terre rôties","Soir",560,45,50,16,["150 g de poulet","300 g de pommes de terre","1 c. à s. d'huile d'olive","Herbes"],["Couper les pommes de terre, les mélanger à l'huile et aux herbes.","Enfourner 30 min à 200 °C avec le poulet en morceaux."],"🍗"],
-["Tartine beurre de cacahuète-banane","Avant la salle",430,12,60,14,["2 tranches de pain","1 c. à s. de beurre de cacahuète","1 banane"],["Tartiner le pain, ajouter la banane en rondelles."],"🍌"],
-["Fromage blanc, fruits rouges et noix","Après la salle",330,22,22,16,["200 g de fromage blanc","100 g de fruits rouges","15 g de noix"],["Mélanger le tout dans un bol."],"🍓"]
-];
-var F={"Glucides":["Bananes","Pastèque","Pommes","Pommes de terre","Riz","Fruits rouges","Pain"],"Lipides":["Amandes","Noix","Noisettes","Pistaches","Beurre de cacahuète","Avocat","Huile d'olive","Poissons gras","Jaune d'œuf","Fromages"],"Protéines":["Poulet","Saumon","Poissons","Thon","Œufs"]};
-var S={},app=document.getElementById("app");
-try{S=JSON.parse(localStorage.getItem("prog2")||"{}")}catch(e){}
-function save(){try{localStorage.setItem("prog2",JSON.stringify(S))}catch(e){}}
-function cnt(i){return P[i].e.filter(function(_,j){return S[i+"-"+j]}).length}
-var td=(new Date().getDay()+6)%7;
-function nav(a){return '<div class="tabs"><button class="'+(a?'':'on')+'" id="t1">🏋️ Séances</button><button class="'+(a?'on':'')+'" id="t2">🥗 Nutrition</button></div>'}
-function bindNav(){document.getElementById("t1").onclick=home;document.getElementById("t2").onclick=food}
-function home(){
-var h='<h1>💪 McFITT 2026</h1><p class="sub">Fessiers • Jambes • Dos • Biceps</p>'+nav(0);
-P.forEach(function(p,i){
-if(p.r){h+='<div class="day rest"><div class="g"><b>'+p.d+'</b><small>'+p.t+'</small></div><span style="font-size:28px">😴</span></div>';return}
-h+='<button class="day'+(p.w==td?' today':'')+'" data-d="'+i+'"><div class="g"><b>'+p.d+'</b><small>'+p.t+'</small></div><span class="badge">'+cnt(i)+'/'+p.e.length+'</span></button>'});
-app.innerHTML=h;bindNav();
-app.querySelectorAll("button.day").forEach(function(b){b.onclick=function(){day(+b.dataset.d)}});
-}
-function day(i){
-var p=P[i],n=cnt(i);
-var h='<button class="back" id="bk">← Retour</button><h1>'+p.d+'</h1><p class="sub">'+p.t+'</p>'+(p.n?'<div class="note">⚠️ '+p.n+'</div>':'')+'<div class="bar"><i style="width:'+n/p.e.length*100+'%"></i></div>';
-p.e.forEach(function(x,j){var d=S[i+"-"+j],m=[x[1],x[2]].filter(Boolean).join(" · ");
-h+='<div class="ex'+(d?' done':'')+'" data-j="'+j+'">'+(gk(x[0])?gsvg(gk(x[0])):'<div class="ico">'+x[4]+'</div>')+'<div class="g"><b>'+x[0]+'</b>'+(m?'<div class="m">'+m+'</div>':'')+(x[3]?'<div class="t">'+x[3]+'</div>':'')+'</div><div class="chk">'+(d?'✓':'')+'</div></div>'});
-h+='<button class="reset" id="rs">Réinitialiser cette séance</button>';
-app.innerHTML=h;window.scrollTo(0,0);
-document.getElementById("bk").onclick=home;
-document.getElementById("rs").onclick=function(){p.e.forEach(function(_,j){delete S[i+"-"+j]});save();day(i)};
-app.querySelectorAll(".ex").forEach(function(el){el.onclick=function(){var k=i+"-"+el.dataset.j;if(S[k])delete S[k];else S[k]=1;save();var y=window.scrollY;day(i);window.scrollTo(0,y)}});
-}
-function food(){
-var h='<h1>🥗 Nutrition</h1><p class="sub">Prise de muscle • Fessiers & Jambes • Valeurs approximatives</p>'+nav(1);
-h+='<h2 style="margin-top:0">Objectifs quotidiens</h2><div class="macs"><div class="mac"><b>100-135g</b><small>Protéines</small></div><div class="mac"><b>230-250g</b><small>Glucides</small></div><div class="mac"><b>50-60g</b><small>Lipides</small></div></div>';
-h+='<p class="sub">Priorités : 1) Atteindre tes protéines • 2) Manger assez de calories • 3) Progresser à la salle</p>';
-h+='<h2>Recettes</h2>';
-R.forEach(function(r){
-h+='<details class="rec"><summary><div class="ico">'+r[8]+'</div><div class="g"><b>'+r[0]+'</b><small>'+r[1]+' · ~'+r[2]+' kcal · P '+r[3]+'g · G '+r[4]+'g · L '+r[5]+'g</small></div></summary><div class="in"><b>Ingrédients</b><ul>'+r[6].map(function(x){return '<li>'+x+'</li>'}).join("")+'</ul><b>Préparation</b><ol>'+r[7].map(function(x){return '<li>'+x+'</li>'}).join("")+'</ol></div></details>'});
-h+='<h2>Mes aliments</h2>';
-for(var k in F)h+='<p class="sub" style="margin:12px 0 8px"><b>'+k+'</b></p><div class="chips">'+F[k].map(function(x){return '<span>'+x+'</span>'}).join("")+'</div>';
-app.innerHTML=h;bindNav();window.scrollTo(0,0);
-}
+  <main id="app"></main>
+  <script>
+    var P = [
+      { d: "Lundi", w: 0, t: "Fessiers - ischios", e: [
+        ["Hip thrust","4×10 (1×12 + 3×8)","25 kg","","🍑"],
+        ["RDL","4×8-10","25 kg","","⬇️"],
+        ["Sumo squat","3×10","","","🏋️"],
+        ["Leg curl","4×10","36-41 kg","","〰️"],
+        ["Kick back","3×12","","Abduction si le kick back n'est pas possible.","🦶"],
+        ["Fentes bulgares","","","","🦵"]
+      ]},
+      { d: "Mardi", w: 1, t: "Haut du corps (dos, épaules, biceps)", n: "Ne jamais fermer le pouce.", e: [
+        ["Lat pulldown","4×8-10","41,3 kg","Assis, tirage bras latéral. Écarter un max le pouce et le rapprocher du poing, sans le fermer.","🔽"],
+        ["Seated row","4×8-10","25 kg","Tirer vers soi, assise, sans bouger le corps.","🚣"],
+        ["Biceps assis sur banc","3×10","7 kg / main","","💪"],
+        ["Hammer curl (ou)","4×10","11,3 kg","À la poulie avec la corde.","🔨"],
+        ["Barre à poids en vague","4×10","10 kg","Bras collés au corps, cible les biceps.","〰️"],
+        ["Câble face pull","4×10","","Cible le dos.","🎯"],
+        ["Arm pull-over","3×10","","Reculer, se pencher vers l'avant, bras tendus avec une barre sur la poulie, ramener vers soi en arc.","🏹"]
+      ]},
+      { d: "Mercredi", w: 2, t: "Repos", r: 1 },
+      { d: "Jeudi", w: 3, t: "Fessiers (4-5 exos)", e: [
+        ["Abducteurs","3×12-16 (6-8 penchée + 6-8 droite)","39 kg","Se pencher vers l'avant.","↔️"],
+        ["Hip thrust","4×10 (1×12 + 3×8)","20 kg","","🍑"],
+        ["RDL","4×8-10","","","⬇️"],
+        ["Fentes bulgares","3×8-10","","","🦵"],
+        ["Kick back","3×8-10","","","🦶"],
+        ["Leg curl (ou)","4×10","36 kg","","〰️"],
+        ["Presse","4×10","79 kg","Pieds hauts.","🦿"],
+        ["Step up à la poulie","","","","🪜"]
+      ]},
+      { d: "Vendredi", w: 4, t: "Cardio - abdos", e: [
+        ["Marche","30 min","","Paliers 6 - 8 - 10 - 12.","🚶"],
+        ["Crunch abdos","50 reps","","","🔥"],
+        ["Lève-jambes","","","","🦵"]
+      ]},
+      { d: "Samedi", w: 5, t: "Bas du corps (full leg)", e: [
+        ["Presse","4×10","","","🦿"],
+        ["Squat","3×8-10","","","🏋️"],
+        ["Fentes bulgares","3×10","","","🦵"],
+        ["Gobelet squat","3×12-15","","Pied surélevé avec un poids.","🥤"],
+        ["Leg extension","3×10-12","","","📐"],
+        ["Leg curl (inverse)","3×10-12","","","〰️"]
+      ]},
+      { d: "Variante", w: -1, t: "Dos - biceps", e: [
+        ["Lat pulldown","3×8-10","","Ne pas tenir avec les pouces.","🔽"],
+        ["Seated câble","3×8-10","28 kg","Tirer vers soi.","🚣"],
+        ["Back extension","3×10-12","","Avec un poids, remonter bien droite.","🧎"],
+        ["Arm pull-over","2×12-15","","Corde sur la poulie, reculer, tirer vers le bas, serrer avec les mains.","🏹"],
+        ["Câble face pull","2×12-15","","Tirer vers la tête, sur les côtés.","🎯"]
+      ]}
+    ];
 
-// Animations : [tête, épaule, hanche, genou, pied, coude, main, (genou2, pied2)] x2 poses
-var G={
-ht:{a:[22,64,32,66,50,80,66,66,68,88,42,76,50,78],b:[24,60,32,66,50,65,68,64,68,88,42,68,50,64],w:1,L:[16,70,38,70]},
-rdl:{a:[50,14,50,26,50,52,50,71,52,88,50,39,50,52],b:[74,38,66,42,40,52,44,70,46,88,66,54,66,66],w:1},
-sq:{a:[50,14,50,26,50,52,50,71,52,88,50,39,52,50],b:[48,35,46,46,38,70,58,66,54,88,52,56,56,58],w:1},
-lc:{a:[14,66,24,68,50,70,68,70,86,70,18,74,10,72],b:[14,66,24,68,50,70,68,70,58,54,18,74,10,72],L:[8,76,72,76]},
-kb:{a:[68,26,62,34,46,54,50,72,52,88,72,42,80,48,44,72,44,88],b:[68,26,62,34,46,54,34,66,18,70,72,42,80,48,44,72,44,88]},
-ab:{a:[50,14,50,26,50,52,52,71,54,88,56,36,62,44,48,71,46,88],b:[50,14,50,26,50,52,38,66,28,80,56,36,62,44,48,71,46,88]},
-bg:{a:[50,14,50,26,50,52,54,70,58,88,50,39,50,51,36,64,24,70],b:[50,26,50,38,50,64,68,68,58,88,50,51,50,63,38,76,24,70],L:[14,72,32,72]},
-lat:{a:[40,32,40,44,40,70,60,64,62,86,44,28,50,10],b:[38,32,38,44,40,70,60,64,62,86,46,56,50,42],w:1,L:[30,72,50,72]},
-row:{a:[34,34,34,46,36,72,56,66,60,86,48,48,62,50],b:[34,34,34,46,36,72,56,66,60,86,26,58,40,56],w:1,L:[26,74,48,74]},
-cu:{a:[50,14,50,26,50,52,50,71,52,88,50,39,52,51],b:[50,14,50,26,50,52,50,71,52,88,50,39,58,28],w:1},
-fp:{a:[50,14,50,26,50,52,50,71,52,88,62,27,74,28],b:[50,14,50,26,50,52,50,71,52,88,60,26,54,14],w:1},
-po:{a:[68,26,62,34,46,54,46,72,48,88,72,30,84,24],b:[68,26,62,34,46,54,46,72,48,88,64,48,58,60],w:1},
-pr:{a:[12,40,18,48,32,70,50,62,66,50,24,62,32,62],b:[12,40,18,48,32,70,44,54,56,68,24,62,32,62],L:[8,70,34,76]},
-st:{a:[50,14,50,26,50,52,62,64,60,80,50,39,50,51,46,72,44,88],b:[58,6,58,18,60,44,62,62,60,80,58,31,58,43,70,56,68,70],L:[54,80,72,80]},
-wk:{a:[50,14,50,26,50,52,56,70,64,86,56,38,60,48,46,70,38,86],b:[50,14,50,26,50,52,46,70,38,86,44,38,40,48,56,70,64,86]},
-cr:{a:[12,80,22,82,48,84,60,66,70,84,16,74,12,78],b:[24,64,30,70,48,84,60,66,70,84,28,60,22,66]},
-lr:{a:[12,80,22,82,46,84,64,84,82,84,32,86,40,86],b:[12,80,22,82,46,84,48,64,48,46,32,86,40,86]},
-le:{a:[34,32,34,44,36,70,56,70,56,88,40,56,44,66],b:[34,32,34,44,36,70,56,70,76,68,40,56,44,66],L:[26,74,58,74]},
-be:{a:[56,82,52,74,40,52,32,68,26,84,54,80,50,76],b:[66,28,58,34,40,52,32,68,26,84,60,42,54,40],w:1,L:[28,52,46,56]}
-};
-var M=[[/hip thrust/,"ht"],[/rdl/,"rdl"],[/squat/,"sq"],[/leg curl/,"lc"],[/kick/,"kb"],[/abduct/,"ab"],[/fentes/,"bg"],[/lat pull/,"lat"],[/row|seated/,"row"],[/curl|biceps|barre à poids/,"cu"],[/face pull/,"fp"],[/pull-over/,"po"],[/presse/,"pr"],[/step/,"st"],[/marche/,"wk"],[/crunch/,"cr"],[/lève/,"lr"],[/back ext/,"be"],[/leg ext/,"le"]];
-function gk(n){n=n.toLowerCase();for(var i=0;i<M.length;i++)if(M[i][0].test(n))return M[i][1]}
-function gsvg(k){return '<svg class="gif" data-k="'+k+'" viewBox="0 0 100 100"><line class="fl" x1="4" y1="90" x2="96" y2="90"/><path class="pl"/><path class="lg2"/><path class="bd"/><circle class="hd" r="5.5"/><circle class="wt" r="4"/></svg>'}
-function tick(ts){
-var t=(1-Math.cos(ts*Math.PI/1200))/2;
-document.querySelectorAll("svg.gif").forEach(function(s){
-var g=G[s.dataset.k];if(!g)return;
-var p=g.a.map(function(v,i){return +(v+(g.b[i]-v)*t).toFixed(1)});
-var q=function(a,b){return p[a]+","+p[b]};
-s.querySelector(".bd").setAttribute("d","M"+q(2,3)+"L"+q(4,5)+"L"+q(6,7)+"L"+q(8,9)+"M"+q(2,3)+"L"+q(10,11)+"L"+q(12,13));
-s.querySelector(".lg2").setAttribute("d",p.length>14?"M"+q(4,5)+"L"+q(14,15)+"L"+q(16,17):"");
-s.querySelector(".pl").setAttribute("d",g.L?"M"+g.L[0]+","+g.L[1]+"L"+g.L[2]+","+g.L[3]:"");
-var h=s.querySelector(".hd");h.setAttribute("cx",p[0]);h.setAttribute("cy",p[1]);
-var w=s.querySelector(".wt");w.style.display=g.w?"":"none";w.setAttribute("cx",p[12]);w.setAttribute("cy",p[13]);
-});
-requestAnimationFrame(tick);
-}
-requestAnimationFrame(tick);
-home();
-</script>
+    var R = [
+      ["Porridge banane-amandes","Petit-déjeuner",480,17,75,12,["60 g de flocons d'avoine","250 ml de lait","1 banane","15 g d'amandes","Cannelle"],["Chauffer l'avoine avec le lait 4-5 min en remuant.","Ajouter la banane en rondelles, les amandes et la cannelle."],"🥣"],
+      ["Omelette avocat-pain","Petit-déjeuner",600,26,30,40,["3 œufs","½ avocat","2 tranches de pain","Sel, poivre"],["Battre les œufs et cuire l'omelette à la poêle.","Servir avec l'avocat écrasé sur le pain grillé."],"🍳"],
+      ["Bowl poulet-riz","Midi",590,48,65,14,["150 g de poulet (cru)","80 g de riz (cru)","Légumes au choix","1 c. à s. d'huile d'olive"],["Cuire le riz.","Saisir le poulet en morceaux dans l'huile 8-10 min.","Assembler avec les légumes."],"🍚"],
+      ["Pâtes au thon","Midi",560,38,70,10,["90 g de pâtes (cru)","1 boîte de thon au naturel","Tomates","1 c. à c. d'huile d'olive"],["Cuire les pâtes.","Mélanger avec le thon émietté, les tomates et l'huile."],"🍝"],
+      ["Saumon et pommes de terre","Soir",540,30,55,20,["130 g de saumon","300 g de pommes de terre","Haricots verts"],["Cuire les pommes de terre à l'eau ou au four 25 min.","Cuire le saumon 8-10 min à la poêle ou au four.","Servir avec les haricots verts."],"🐟"],
+      ["Poulet et pommes de terre rôties","Soir",560,45,50,16,["150 g de poulet","300 g de pommes de terre","1 c. à s. d'huile d'olive","Herbes"],["Couper les pommes de terre, les mélanger à l'huile et aux herbes.","Enfourner 30 min à 200 °C avec le poulet en morceaux."],"🍗"],
+      ["Tartine beurre de cacahuète-banane","Avant la salle",430,12,60,14,["2 tranches de pain","1 c. à s. de beurre de cacahuète","1 banane"],["Tartiner le pain, ajouter la banane en rondelles."],"🍌"],
+      ["Fromage blanc, fruits rouges et noix","Après la salle",330,22,22,16,["200 g de fromage blanc","100 g de fruits rouges","15 g de noix"],["Mélanger le tout dans un bol."],"🍓"]
+    ];
+
+    var F = {
+      "Glucides": ["Bananes","Pastèque","Pommes","Pommes de terre","Riz","Fruits rouges","Pain"],
+      "Lipides": ["Amandes","Noix","Noisettes","Pistaches","Beurre de cacahuète","Avocat","Huile d'olive","Poissons gras","Jaune d'œuf","Fromages"],
+      "Protéines": ["Poulet","Saumon","Poissons","Thon","Œufs"]
+    };
+
+    var S = {}, app = document.getElementById('app');
+    try { S = JSON.parse(localStorage.getItem('prog2') || '{}'); } catch (e) {}
+    function save(){ try { localStorage.setItem('prog2', JSON.stringify(S)); } catch (e) {} }
+    function cnt(i){ return P[i].e.filter(function(_, j){ return S[i + '-' + j]; }).length; }
+    var td = (new Date().getDay() + 6) % 7;
+
+    function nav(a){
+      return '<div class="tabs"><button class="' + (a ? '' : 'on') + '" id="t1">🏋️ Séances</button><button class="' + (a ? 'on' : '') + '" id="t2">🥗 Nutrition</button></div>';
+    }
+
+    function bindNav(){
+      document.getElementById('t1').onclick = home;
+      document.getElementById('t2').onclick = food;
+    }
+
+    function home(){
+      var h = '<section class="hero"><div class="brand"><span class="badge">2026</span></div><h1>McFITT</h1><p class="sub">Fessiers • Jambes • Dos • Biceps</p><div class="stats"><div class="stat"><strong>' + P.filter(p => !p.r).length + '</strong><small>Séances</small></div><div class="stat"><strong>' + P.reduce((sum, p) => sum + (p.e ? p.e.length : 0), 0) + '</strong><small>Exos</small></div><div class="stat"><strong>6</strong><small>Jours</small></div></div></section>' + nav(0);
+      P.forEach(function(p, i){
+        if (p.r) {
+          h += '<div class="day rest"><div class="g"><b>' + p.d + '</b><small>' + p.t + '</small></div><span style="font-size: 26px">😴</span></div>';
+          return;
+        }
+        h += '<button class="day' + (p.w == td ? ' today' : '') + '" data-d="' + i + '"><div class="g"><b>' + p.d + '</b><small>' + p.t + '</small></div><span class="badge">' + cnt(i) + '/' + p.e.length + '</span></button>';
+      });
+      app.innerHTML = h;
+      bindNav();
+      app.querySelectorAll('button.day').forEach(function(b){
+        b.onclick = function(){ day(+b.dataset.d); };
+      });
+    }
+
+    function day(i){
+      var p = P[i], n = cnt(i);
+      var h = '<button class="back" id="bk">← Retour</button><h1 style="font-size:30px; margin: 0 0 8px;">' + p.d + '</h1><p class="sub">' + p.t + '</p>' + (p.n ? '<div class="note">⚠️ ' + p.n + '</div>' : '') + '<div class="bar"><i style="width:' + (n / p.e.length * 100) + '%"></i></div>';
+      p.e.forEach(function(x, j){
+        var d = S[i + '-' + j];
+        var m = [x[1], x[2]].filter(Boolean).join(' · ');
+        h += '<div class="ex' + (d ? ' done' : '') + '" data-j="' + j + '">' + (gk(x[0]) ? gsvg(gk(x[0])) : '<div class="ico">' + x[4] + '</div>') + '<div class="g"><b>' + x[0] + '</b>' + (m ? '<div class="m">' + m + '</div>' : '') + (x[3] ? '<div class="t">' + x[3] + '</div>' : '') + '</div><div class="chk">' + (d ? '✓' : '') + '</div></div>';
+      });
+      h += '<button class="reset" id="rs">Réinitialiser cette séance</button>';
+      app.innerHTML = h;
+      window.scrollTo(0, 0);
+      document.getElementById('bk').onclick = home;
+      document.getElementById('rs').onclick = function(){
+        p.e.forEach(function(_, j){ delete S[i + '-' + j]; });
+        save();
+        day(i);
+      };
+      app.querySelectorAll('.ex').forEach(function(el){
+        el.onclick = function(){
+          var key = i + '-' + el.dataset.j;
+          if (S[key]) delete S[key]; else S[key] = 1;
+          save();
+          var y = window.scrollY;
+          day(i);
+          window.scrollTo(0, y);
+        };
+      });
+    }
+
+    function food(){
+      var h = '<section class="hero" style="padding-bottom:20px"><div class="brand"><span class="badge">Nutrition</span></div><h1 style="margin-top:16px; font-size:32px;">McFITT</h1><p class="sub">Prise de muscle • Jambes • Fessiers • Performance</p><div class="stats"><div class="stat"><strong>100-135g</strong><small>Protéines</small></div><div class="stat"><strong>230-250g</strong><small>Glucides</small></div><div class="stat"><strong>50-60g</strong><small>Lipides</small></div></div></section>' + nav(1);
+      h += '<h2 style="margin-top: 18px;">Recettes</h2>';
+      R.forEach(function(r){
+        h += '<details class="rec"><summary><div class="ico">' + r[8] + '</div><div class="g"><b>' + r[0] + '</b><small>' + r[1] + ' · ~' + r[2] + ' kcal · P ' + r[3] + 'g · G ' + r[4] + 'g · L ' + r[5] + 'g</small></div></summary><div class="in"><b>Ingrédients</b><ul>' + r[6].map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul><b>Préparation</b><ol>' + r[7].map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ol></div></details>';
+      });
+      h += '<h2>Aliments clés</h2>';
+      for (var k in F) {
+        h += '<p class="sub" style="margin:10px 0 6px;"><b>' + k + '</b></p><div class="chips">' + F[k].map(function(x){ return '<span>' + x + '</span>'; }).join('') + '</div>';
+      }
+      app.innerHTML = h;
+      bindNav();
+      window.scrollTo(0, 0);
+    }
+
+    var G = {
+      ht:{a:[22,64,32,66,50,80,66,66,68,88,42,76,50,78],b:[24,60,32,66,50,65,68,64,68,88,42,68,50,64],w:1,L:[16,70,38,70]},
+      rdl:{a:[50,14,50,26,50,52,50,71,52,88,50,39,50,52],b:[74,38,66,42,40,52,44,70,46,88,66,54,66,66],w:1},
+      sq:{a:[50,14,50,26,50,52,50,71,52,88,50,39,52,50],b:[48,35,46,46,38,70,58,66,54,88,52,56,56,58],w:1},
+      lc:{a:[14,66,24,68,50,70,68,70,86,70,18,74,10,72],b:[14,66,24,68,50,70,68,70,58,54,18,74,10,72],L:[8,76,72,76]},
+      kb:{a:[68,26,62,34,46,54,50,72,52,88,72,42,80,48,44,72,44,88],b:[68,26,62,34,46,54,34,66,18,70,72,42,80,48,44,72,44,88]},
+      ab:{a:[50,14,50,26,50,52,52,71,54,88,56,36,62,44,48,71,46,88],b:[50,14,50,26,50,52,38,66,28,80,56,36,62,44,48,71,46,88]},
+      bg:{a:[50,14,50,26,50,52,54,70,58,88,50,39,50,51,36,64,24,70],b:[50,26,50,38,50,64,68,68,58,88,50,51,50,63,38,76,24,70],L:[14,72,32,72]},
+      lat:{a:[40,32,40,44,40,70,60,64,62,86,44,28,50,10],b:[38,32,38,44,40,70,60,64,62,86,46,56,50,42],w:1,L:[30,72,50,72]},
+      row:{a:[34,34,34,46,36,72,56,66,60,86,48,48,62,50],b:[34,34,34,46,36,72,56,66,60,86,26,58,40,56],w:1,L:[26,74,48,74]},
+      cu:{a:[50,14,50,26,50,52,50,71,52,88,50,39,52,51],b:[50,14,50,26,50,52,50,71,52,88,50,39,58,28],w:1},
+      fp:{a:[50,14,50,26,50,52,50,71,52,88,62,27,74,28],b:[50,14,50,26,50,52,50,71,52,88,60,26,54,14],w:1},
+      po:{a:[68,26,62,34,46,54,46,72,48,88,72,30,84,24],b:[68,26,62,34,46,54,46,72,48,88,64,48,58,60],w:1},
+      pr:{a:[12,40,18,48,32,70,50,62,66,50,24,62,32,62],b:[12,40,18,48,32,70,44,54,56,68,24,62,32,62],L:[8,70,34,76]},
+      st:{a:[50,14,50,26,50,52,62,64,60,80,50,39,50,51,46,72,44,88],b:[58,6,58,18,60,44,62,62,60,80,58,31,58,43,70,56,68,70],L:[54,80,72,80]},
+      wk:{a:[50,14,50,26,50,52,56,70,64,86,56,38,60,48,46,70,38,86],b:[50,14,50,26,50,52,46,70,38,86,44,38,40,48,56,70,64,86]},
+      cr:{a:[12,80,22,82,48,84,60,66,70,84,16,74,12,78],b:[24,64,30,70,48,84,60,66,70,84,28,60,22,66]},
+      lr:{a:[12,80,22,82,46,84,64,84,82,84,32,86,40,86],b:[12,80,22,82,46,84,48,64,48,46,32,86,40,86]},
+      le:{a:[34,32,34,44,36,70,56,70,56,88,40,56,44,66],b:[34,32,34,44,36,70,56,70,76,68,40,56,44,66],L:[26,74,58,74]},
+      be:{a:[56,82,52,74,40,52,32,68,26,84,54,80,50,76],b:[66,28,58,34,40,52,32,68,26,84,60,42,54,40],w:1,L:[28,52,46,56]}
+    };
+
+    var M = [
+      [/hip thrust/, 'ht'],
+      [/rdl/, 'rdl'],
+      [/squat/, 'sq'],
+      [/leg curl/, 'lc'],
+      [/kick/, 'kb'],
+      [/abduct/, 'ab'],
+      [/fentes/, 'bg'],
+      [/lat pull/, 'lat'],
+      [/row|seated/, 'row'],
+      [/curl|biceps|barre à poids/, 'cu'],
+      [/face pull/, 'fp'],
+      [/pull-over/, 'po'],
+      [/presse/, 'pr'],
+      [/step/, 'st'],
+      [/marche/, 'wk'],
+      [/crunch/, 'cr'],
+      [/lève/, 'lr'],
+      [/back ext/, 'be'],
+      [/leg ext/, 'le']
+    ];
+
+    function gk(n){
+      n = n.toLowerCase();
+      for (var i = 0; i < M.length; i++) {
+        if (M[i][0].test(n)) return M[i][1];
+      }
+      return null;
+    }
+
+    function gsvg(k){
+      return '<svg class="gif" data-k="' + k + '" viewBox="0 0 100 100"><line class="fl" x1="4" y1="90" x2="96" y2="90"/><path class="pl"/><path class="lg2"/><path class="bd"/><circle class="hd" r="5.5"/><circle class="wt" r="4"/></svg>';
+    }
+
+    function tick(ts){
+      var t = (1 - Math.cos(ts * Math.PI / 1200)) / 2;
+      document.querySelectorAll('svg.gif').forEach(function(s){
+        var g = G[s.dataset.k];
+        if (!g) return;
+        var p = g.a.map(function(v, i){ return +(v + (g.b[i] - v) * t).toFixed(1); });
+        var q = function(a, b){ return p[a] + ',' + p[b]; };
+        s.querySelector('.bd').setAttribute('d', 'M' + q(2,3) + 'L' + q(4,5) + 'L' + q(6,7) + 'L' + q(8,9) + 'M' + q(2,3) + 'L' + q(10,11) + 'L' + q(12,13));
+        s.querySelector('.lg2').setAttribute('d', p.length > 14 ? 'M' + q(4,5) + 'L' + q(14,15) + 'L' + q(16,17) : '');
+        s.querySelector('.pl').setAttribute('d', g.L ? 'M' + g.L[0] + ',' + g.L[1] + 'L' + g.L[2] + ',' + g.L[3] : '');
+        var h = s.querySelector('.hd');
+        h.setAttribute('cx', p[0]);
+        h.setAttribute('cy', p[1]);
+        var w = s.querySelector('.wt');
+        w.style.display = g.w ? '' : 'none';
+        w.setAttribute('cx', p[12]);
+        w.setAttribute('cy', p[13]);
+      });
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+    home();
+  </script>
 </body>
 </html>
