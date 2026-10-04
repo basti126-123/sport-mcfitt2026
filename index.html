@@ -367,6 +367,23 @@
     .ex.done {
       opacity: 0.72;
       border-color: var(--success);
+      animation: pulseComplete 0.45s ease-out;
+    }
+
+    .day.done-day {
+      animation: dayGlow 0.5s ease-out;
+    }
+
+    @keyframes pulseComplete {
+      0% { transform: scale(0.96); box-shadow: 0 0 0 rgba(232,255,0,0); }
+      40% { transform: scale(1.02); box-shadow: 0 0 18px rgba(232,255,0,0.35); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(232,255,0,0); }
+    }
+
+    @keyframes dayGlow {
+      0% { box-shadow: 0 0 0 rgba(232,255,0,0); }
+      50% { box-shadow: 0 0 24px rgba(232,255,0,0.35); }
+      100% { box-shadow: 0 0 0 rgba(232,255,0,0); }
     }
 
     .ex.done b {
@@ -397,21 +414,27 @@
     .reset {
       margin-top: 22px;
       width: 100%;
-      background: rgba(255, 215, 0, 0.05);
-      color: var(--accent);
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.18), rgba(255, 152, 0, 0.08));
+      color: #000;
       border: 1.5px solid var(--accent);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px 16px;
       font: inherit;
-      font-weight: 700;
+      font-weight: 900;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+      box-shadow: 0 0 16px rgba(255, 215, 0, 0.25);
+      animation: glowReset 1.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowReset {
+      from { box-shadow: 0 0 8px rgba(255, 215, 0, 0.25), 0 0 18px rgba(255, 152, 0, 0.14); }
+      to { box-shadow: 0 0 16px rgba(255, 215, 0, 0.45), 0 0 28px rgba(255, 152, 0, 0.2); }
     }
 
     .reset:hover {
-      background: rgba(255, 215, 0, 0.1);
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      transform: translateY(-1px);
+      filter: brightness(1.05);
     }
 
     .macs {
@@ -624,7 +647,8 @@
           h += '<div class="day rest"><div class="g"><b>' + p.d + '</b><small>' + p.t + '</small></div><span style="font-size: 26px">😴</span></div>';
           return;
         }
-        h += '<button class="day' + (p.w == td ? ' today' : '') + '" data-d="' + i + '"><div class="g"><b>' + p.d + '</b><small>' + p.t + '</small></div><span class="badge">' + cnt(i) + '/' + p.e.length + '</span></button>';
+        var isDone = cnt(i) === p.e.length;
+        h += '<button class="day' + (p.w == td ? ' today' : '') + (isDone ? ' done-day' : '') + '" data-d="' + i + '"><div class="g"><b>' + p.d + '</b><small>' + p.t + '</small></div><span class="badge">' + cnt(i) + '/' + p.e.length + '</span></button>';
       });
       app.innerHTML = h;
       bindNav();
@@ -641,7 +665,7 @@
         var m = [x[1], x[2]].filter(Boolean).join(' · ');
         h += '<div class="ex' + (d ? ' done' : '') + '" data-j="' + j + '">' + (gk(x[0]) ? gsvg(gk(x[0])) : '<div class="ico">' + x[4] + '</div>') + '<div class="g"><b>' + x[0] + '</b>' + (m ? '<div class="m">' + m + '</div>' : '') + (x[3] ? '<div class="t">' + x[3] + '</div>' : '') + '</div><div class="chk">' + (d ? '✓' : '') + '</div></div>';
       });
-      h += '<button class="reset" id="rs">Réinitialiser cette séance</button>';
+      h += '<button class="reset" id="rs">Réinitialiser la séance</button>';
       app.innerHTML = h;
       window.scrollTo(0, 0);
       document.getElementById('bk').onclick = home;
