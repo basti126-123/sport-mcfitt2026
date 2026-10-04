@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon programme sport</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--tx:#17202e;--mu:#6b7686;--ac:#2f6df6;--ok:#2fa36b;--bd:#e1e6ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141c;--card:#1a212d;--tx:#eef2f8;--mu:#97a3b6;--ac:#6c9bff;--ok:#4cc88a;--bd:#2a3342}}
+:root[data-theme="dark"]{--bg:#10141c;--card:#1a212d;--tx:#eef2f8;--mu:#97a3b6;--ac:#6c9bff;--ok:#4cc88a;--bd:#2a3342}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:24px;margin:6px 0 4px}
+h2{font-size:17px;margin:22px 0 10px}
+.sub{color:var(--mu);margin:0 0 16px;font-size:14px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{flex:1;padding:11px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;font-weight:600;cursor:pointer}
+.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.day,.ex,.rec,.mac{background:var(--card);border:1px solid var(--bd);border-radius:16px;margin-bottom:10px;color:var(--tx)}
+.day,.ex{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px;font:inherit;cursor:pointer}
+.day b{display:block;font-size:17px}
+.day small{color:var(--mu)}
+.day .g{flex:1}
+.badge{font-size:12px;font-weight:700;color:var(--ac);white-space:nowrap}
+.today{border-color:var(--ac)}
+.rest{opacity:.55;cursor:default}
+.back{background:none;border:0;color:var(--ac);font:inherit;font-weight:600;padding:8px 0;cursor:pointer}
+.bar{height:8px;background:var(--bd);border-radius:8px;overflow:hidden;margin:10px 0 18px}
+.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.ico{font-size:28px;width:50px;height:50px;display:grid;place-items:center;background:var(--bg);border-radius:14px;flex:none}
+.ex .g{flex:1}
+.ex b{font-size:16px;display:block}
+.ex .m{color:var(--ac);font-weight:600;font-size:14px;margin:2px 0}
+.ex .t{color:var(--mu);font-size:13px;line-height:1.35}
+.chk{width:28px;height:28px;border:2px solid var(--bd);border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700}
+.ex.done{opacity:.6;border-color:var(--ok)}
+.ex.done b{text-decoration:line-through}
+.ex.done .chk{background:var(--ok);border-color:var(--ok)}
+.note{background:var(--card);border-left:4px solid var(--ac);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:14px}
+.reset{margin-top:14px;background:none;border:1px solid var(--bd);color:var(--mu);border-radius:12px;padding:10px 14px;font:inherit;cursor:pointer}
+.macs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.mac{padding:12px 6px;text-align:center;margin:0}
+.mac b{display:block;font-size:17px;color:var(--ac)}
+.mac small{color:var(--mu);font-size:12px}
+.rec{padding:0}
+.rec summary{list-style:none;padding:14px;cursor:pointer;display:flex;gap:12px;align-items:center}
+.rec summary::-webkit-details-marker{display:none}
+.rec .g{flex:1}
+.rec b{display:block;font-size:16px}
+.rec small{color:var(--mu);font-size:12px}
+.rec .in{padding:0 14px 14px;font-size:14px;line-height:1.45}
+.rec ul,.rec ol{margin:4px 0 8px;padding-left:20px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:6px 11px;font-size:13px}
+.gif{width:84px;height:84px;flex:none;background:var(--bg);border-radius:14px}
+.gif path,.gif line{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gif .bd{stroke:var(--tx);stroke-width:4}.gif .lg2{stroke:var(--mu);stroke-width:4}.gif .pl{stroke:var(--ac);stroke-width:3}.gif .fl{stroke:var(--bd);stroke-width:2}
+.gif .hd{fill:var(--tx)}.gif .wt{fill:var(--ac)}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+// [nom, séries, poids, commentaire, icône]
+var P=[
+{d:"Lundi",w:0,t:"Fessiers - ischios",e:[
+["Hip thrust","4×10 (1×12 + 3×8)","25 kg","","🍑"],
+["RDL","4×8-10","25 kg","","⬇️"],
+["Sumo squat","3×10","","","🏋️"],
+["Leg curl","4×10","36-41 kg","","〰️"],
+["Kick back","3×12","","Abduction si le kick back n'est pas possible.","🦶"],
+["Fentes bulgares","","","","🦵"]]},
+{d:"Mardi",w:1,t:"Haut du corps (dos, épaules, biceps)",n:"Ne jamais fermer le pouce.",e:[
+["Lat pulldown","4×8-10","41,3 kg","Assis, tirage bras latéral. Écarter un max le pouce et le rapprocher du poing, sans le fermer.","🔽"],
+["Seated row","4×8-10","25 kg","Tirer vers soi, assise, sans bouger le corps.","🚣"],
+["Biceps assis sur banc","3×10","7 kg / main","","💪"],
+["Hammer curl (ou)","4×10","11,3 kg","À la poulie avec la corde.","🔨"],
+["Barre à poids en vague","4×10","10 kg","Bras collés au corps, cible les biceps.","〰️"],
+["Câble face pull","4×10","","Cible le dos.","🎯"],
+["Arm pull-over","3×10","","Reculer, se pencher vers l'avant, bras tendus avec une barre sur la poulie, ramener vers soi en arc.","🏹"]]},
+{d:"Mercredi",w:2,t:"Repos",r:1},
+{d:"Jeudi",w:3,t:"Fessiers (4-5 exos)",e:[
+["Abducteurs","3×12-16 (6-8 penchée + 6-8 droite)","39 kg","Se pencher vers l'avant.","↔️"],
+["Hip thrust","4×10 (1×12 + 3×8)","20 kg","","🍑"],
+["RDL","4×8-10","","","⬇️"],
+["Fentes bulgares","3×8-10","","","🦵"],
+["Kick back","3×8-10","","","🦶"],
+["Leg curl (ou)","4×10","36 kg","","〰️"],
+["Presse","4×10","79 kg","Pieds hauts.","🦿"],
+["Step up à la poulie","","","","🪜"]]},
+{d:"Vendredi",w:4,t:"Cardio - abdos",e:[
+["Marche","30 min","","Paliers 6 - 8 - 10 - 12.","🚶"],
+["Crunch abdos","50 reps","","","🔥"],
+["Lève-jambes","","","","🦵"]]},
+{d:"Samedi",w:5,t:"Bas du corps (full leg)",e:[
+["Presse","4×10","","","🦿"],
+["Squat","3×8-10","","","🏋️"],
+["Fentes bulgares","3×10","","","🦵"],
+["Gobelet squat","3×12-15","","Pied surélevé avec un poids.","🥤"],
+["Leg extension","3×10-12","","","📐"],
+["Leg curl (inverse)","3×10-12","","","〰️"]]},
+{d:"Variante",w:-1,t:"Dos - biceps",e:[
+["Lat pulldown","3×8-10","","Ne pas tenir avec les pouces.","🔽"],
+["Seated câble","3×8-10","28 kg","Tirer vers soi.","🚣"],
+["Back extension","3×10-12","","Avec un poids, remonter bien droite.","🧎"],
+["Arm pull-over","2×12-15","","Corde sur la poulie, reculer, tirer vers le bas, serrer avec les mains.","🏹"],
+["Câble face pull","2×12-15","","Tirer vers la tête, sur les côtés.","🎯"]]}
+];
+// [titre, moment, kcal, P, G, L, ingrédients, étapes, icône]
+var R=[
+["Porridge banane-amandes","Petit-déjeuner",480,17,75,12,["60 g de flocons d'avoine","250 ml de lait","1 banane","15 g d'amandes","Cannelle"],["Chauffer l'avoine avec le lait 4-5 min en remuant.","Ajouter la banane en rondelles, les amandes et la cannelle."],"🥣"],
+["Omelette avocat-pain","Petit-déjeuner",600,26,30,40,["3 œufs","½ avocat","2 tranches de pain","Sel, poivre"],["Battre les œufs et cuire l'omelette à la poêle.","Servir avec l'avocat écrasé sur le pain grillé."],"🍳"],
+["Bowl poulet-riz","Midi",590,48,65,14,["150 g de poulet (cru)","80 g de riz (cru)","Légumes au choix","1 c. à s. d'huile d'olive"],["Cuire le riz.","Saisir le poulet en morceaux dans l'huile 8-10 min.","Assembler avec les légumes."],"🍚"],
+["Pâtes au thon","Midi",560,38,70,10,["90 g de pâtes (cru)","1 boîte de thon au naturel","Tomates","1 c. à c. d'huile d'olive"],["Cuire les pâtes.","Mélanger avec le thon émietté, les tomates et l'huile."],"🍝"],
+["Saumon et pommes de terre","Soir",540,30,55,20,["130 g de saumon","300 g de pommes de terre","Haricots verts"],["Cuire les pommes de terre à l'eau ou au four 25 min.","Cuire le saumon 8-10 min à la poêle ou au four.","Servir avec les haricots verts."],"🐟"],
+["Poulet et pommes de terre rôties","Soir",560,45,50,16,["150 g de poulet","300 g de pommes de terre","1 c. à s. d'huile d'olive","Herbes"],["Couper les pommes de terre, les mélanger à l'huile et aux herbes.","Enfourner 30 min à 200 °C avec le poulet en morceaux."],"🍗"],
+["Tartine beurre de cacahuète-banane","Avant la salle",430,12,60,14,["2 tranches de pain","1 c. à s. de beurre de cacahuète","1 banane"],["Tartiner le pain, ajouter la banane en rondelles."],"🍌"],
+["Fromage blanc, fruits rouges et noix","Après la salle",330,22,22,16,["200 g de fromage blanc","100 g de fruits rouges","15 g de noix"],["Mélanger le tout dans un bol."],"🍓"]
+];
+var F={"Glucides":["Bananes","Pastèque","Pommes","Pommes de terre","Riz","Fruits rouges","Pain"],"Lipides":["Amandes","Noix","Noisettes","Pistaches","Beurre de cacahuète","Avocat","Huile d'olive","Poissons gras","Jaune d'œuf","Fromages"],"Protéines":["Poulet","Saumon","Poissons","Thon","Œufs"]};
+var S={},app=document.getElementById("app");
+try{S=JSON.parse(localStorage.getItem("prog2")||"{}")}catch(e){}
+function save(){try{localStorage.setItem("prog2",JSON.stringify(S))}catch(e){}}
+function cnt(i){return P[i].e.filter(function(_,j){return S[i+"-"+j]}).length}
+var td=(new Date().getDay()+6)%7;
+function nav(a){return '<div class="tabs"><button class="'+(a?'':'on')+'" id="t1">🏋️ Séances</button><button class="'+(a?'on':'')+'" id="t2">🥗 Alimentation</button></div>'}
+function bindNav(){document.getElementById("t1").onclick=home;document.getElementById("t2").onclick=food}
+function home(){
+var h='<h1>💪 Mon programme</h1><p class="sub">Fessiers, jambes, dos et biceps</p>'+nav(0);
+P.forEach(function(p,i){
+if(p.r){h+='<div class="day rest"><div class="g"><b>'+p.d+'</b><small>'+p.t+'</small></div><span>😴</span></div>';return}
+h+='<button class="day'+(p.w==td?' today':'')+'" data-d="'+i+'"><div class="g"><b>'+p.d+'</b><small>'+p.t+'</small></div><span class="badge">'+cnt(i)+'/'+p.e.length+'</span></button>'});
+app.innerHTML=h;bindNav();
+app.querySelectorAll("button.day").forEach(function(b){b.onclick=function(){day(+b.dataset.d)}});
+}
+function day(i){
+var p=P[i],n=cnt(i);
+var h='<button class="back" id="bk">← Retour</button><h1>'+p.d+'</h1><p class="sub">'+p.t+'</p>'+(p.n?'<div class="note">⚠️ '+p.n+'</div>':'')+'<div class="bar"><i style="width:'+n/p.e.length*100+'%"></i></div>';
+p.e.forEach(function(x,j){var d=S[i+"-"+j],m=[x[1],x[2]].filter(Boolean).join(" · ");
+h+='<div class="ex'+(d?' done':'')+'" data-j="'+j+'">'+(gk(x[0])?gsvg(gk(x[0])):'<div class="ico">'+x[4]+'</div>')+'<div class="g"><b>'+x[0]+'</b>'+(m?'<div class="m">'+m+'</div>':'')+(x[3]?'<div class="t">'+x[3]+'</div>':'')+'</div><div class="chk">'+(d?'✓':'')+'</div></div>'});
+h+='<button class="reset" id="rs">Réinitialiser cette séance</button>';
+app.innerHTML=h;window.scrollTo(0,0);
+document.getElementById("bk").onclick=home;
+document.getElementById("rs").onclick=function(){p.e.forEach(function(_,j){delete S[i+"-"+j]});save();day(i)};
+app.querySelectorAll(".ex").forEach(function(el){el.onclick=function(){var k=i+"-"+el.dataset.j;if(S[k])delete S[k];else S[k]=1;save();var y=window.scrollY;day(i);window.scrollTo(0,y)}});
+}
+function food(){
+var h='<h1>🥗 Alimentation</h1><p class="sub">Objectif : prise de muscle (fessiers, jambes). Valeurs approximatives.</p>'+nav(1);
+h+='<h2 style="margin-top:0">Objectifs par jour</h2><div class="macs"><div class="mac"><b>100-135 g</b><small>Protéines</small></div><div class="mac"><b>230-250 g</b><small>Glucides</small></div><div class="mac"><b>50-60 g</b><small>Lipides</small></div></div>';
+h+='<p class="sub">Priorités : 1) atteindre tes protéines, 2) manger assez de calories, 3) progresser à la salle.</p>';
+h+='<h2>Recettes</h2>';
+R.forEach(function(r){
+h+='<details class="rec"><summary><div class="ico">'+r[8]+'</div><div class="g"><b>'+r[0]+'</b><small>'+r[1]+' · ~'+r[2]+' kcal · P '+r[3]+' g · G '+r[4]+' g · L '+r[5]+' g</small></div></summary><div class="in"><b>Ingrédients</b><ul>'+r[6].map(function(x){return '<li>'+x+'</li>'}).join("")+'</ul><b>Préparation</b><ol>'+r[7].map(function(x){return '<li>'+x+'</li>'}).join("")+'</ol></div></details>'});
+h+='<h2>Mes aliments par catégorie</h2>';
+for(var k in F)h+='<p class="sub" style="margin:8px 0 6px"><b>'+k+'</b></p><div class="chips">'+F[k].map(function(x){return '<span>'+x+'</span>'}).join("")+'</div>';
+app.innerHTML=h;bindNav();window.scrollTo(0,0);
+}
+
+// Animations : [tête, épaule, hanche, genou, pied, coude, main, (genou2, pied2)] x2 poses
+var G={
+ht:{a:[22,64,32,66,50,80,66,66,68,88,42,76,50,78],b:[24,60,32,66,50,65,68,64,68,88,42,68,50,64],w:1,L:[16,70,38,70]},
+rdl:{a:[50,14,50,26,50,52,50,71,52,88,50,39,50,52],b:[74,38,66,42,40,52,44,70,46,88,66,54,66,66],w:1},
+sq:{a:[50,14,50,26,50,52,50,71,52,88,50,39,52,50],b:[48,35,46,46,38,70,58,66,54,88,52,56,56,58],w:1},
+lc:{a:[14,66,24,68,50,70,68,70,86,70,18,74,10,72],b:[14,66,24,68,50,70,68,70,58,54,18,74,10,72],L:[8,76,72,76]},
+kb:{a:[68,26,62,34,46,54,50,72,52,88,72,42,80,48,44,72,44,88],b:[68,26,62,34,46,54,34,66,18,70,72,42,80,48,44,72,44,88]},
+ab:{a:[50,14,50,26,50,52,52,71,54,88,56,36,62,44,48,71,46,88],b:[50,14,50,26,50,52,38,66,28,80,56,36,62,44,48,71,46,88]},
+bg:{a:[50,14,50,26,50,52,54,70,58,88,50,39,50,51,36,64,24,70],b:[50,26,50,38,50,64,68,68,58,88,50,51,50,63,38,76,24,70],L:[14,72,32,72]},
+lat:{a:[40,32,40,44,40,70,60,64,62,86,44,28,50,10],b:[38,32,38,44,40,70,60,64,62,86,46,56,50,42],w:1,L:[30,72,50,72]},
+row:{a:[34,34,34,46,36,72,56,66,60,86,48,48,62,50],b:[34,34,34,46,36,72,56,66,60,86,26,58,40,56],w:1,L:[26,74,48,74]},
+cu:{a:[50,14,50,26,50,52,50,71,52,88,50,39,52,51],b:[50,14,50,26,50,52,50,71,52,88,50,39,58,28],w:1},
+fp:{a:[50,14,50,26,50,52,50,71,52,88,62,27,74,28],b:[50,14,50,26,50,52,50,71,52,88,60,26,54,14],w:1},
+po:{a:[68,26,62,34,46,54,46,72,48,88,72,30,84,24],b:[68,26,62,34,46,54,46,72,48,88,64,48,58,60],w:1},
+pr:{a:[12,40,18,48,32,70,50,62,66,50,24,62,32,62],b:[12,40,18,48,32,70,44,54,56,68,24,62,32,62],L:[8,70,34,76]},
+st:{a:[50,14,50,26,50,52,62,64,60,80,50,39,50,51,46,72,44,88],b:[58,6,58,18,60,44,62,62,60,80,58,31,58,43,70,56,68,70],L:[54,80,72,80]},
+wk:{a:[50,14,50,26,50,52,56,70,64,86,56,38,60,48,46,70,38,86],b:[50,14,50,26,50,52,46,70,38,86,44,38,40,48,56,70,64,86]},
+cr:{a:[12,80,22,82,48,84,60,66,70,84,16,74,12,78],b:[24,64,30,70,48,84,60,66,70,84,28,60,22,66]},
+lr:{a:[12,80,22,82,46,84,64,84,82,84,32,86,40,86],b:[12,80,22,82,46,84,48,64,48,46,32,86,40,86]},
+le:{a:[34,32,34,44,36,70,56,70,56,88,40,56,44,66],b:[34,32,34,44,36,70,56,70,76,68,40,56,44,66],L:[26,74,58,74]},
+be:{a:[56,82,52,74,40,52,32,68,26,84,54,80,50,76],b:[66,28,58,34,40,52,32,68,26,84,60,42,54,40],w:1,L:[28,52,46,56]}
+};
+var M=[[/hip thrust/,"ht"],[/rdl/,"rdl"],[/squat/,"sq"],[/leg curl/,"lc"],[/kick/,"kb"],[/abduct/,"ab"],[/fentes/,"bg"],[/lat pull/,"lat"],[/row|seated/,"row"],[/curl|biceps|barre à poids/,"cu"],[/face pull/,"fp"],[/pull-over/,"po"],[/presse/,"pr"],[/step/,"st"],[/marche/,"wk"],[/crunch/,"cr"],[/lève/,"lr"],[/back ext/,"be"],[/leg ext/,"le"]];
+function gk(n){n=n.toLowerCase();for(var i=0;i<M.length;i++)if(M[i][0].test(n))return M[i][1]}
+function gsvg(k){return '<svg class="gif" data-k="'+k+'" viewBox="0 0 100 100"><line class="fl" x1="4" y1="90" x2="96" y2="90"/><path class="pl"/><path class="lg2"/><path class="bd"/><circle class="hd" r="5.5"/><circle class="wt" r="4"/></svg>'}
+function tick(ts){
+var t=(1-Math.cos(ts*Math.PI/1200))/2;
+document.querySelectorAll("svg.gif").forEach(function(s){
+var g=G[s.dataset.k];if(!g)return;
+var p=g.a.map(function(v,i){return +(v+(g.b[i]-v)*t).toFixed(1)});
+var q=function(a,b){return p[a]+","+p[b]};
+s.querySelector(".bd").setAttribute("d","M"+q(2,3)+"L"+q(4,5)+"L"+q(6,7)+"L"+q(8,9)+"M"+q(2,3)+"L"+q(10,11)+"L"+q(12,13));
+s.querySelector(".lg2").setAttribute("d",p.length>14?"M"+q(4,5)+"L"+q(14,15)+"L"+q(16,17):"");
+s.querySelector(".pl").setAttribute("d",g.L?"M"+g.L[0]+","+g.L[1]+"L"+g.L[2]+","+g.L[3]:"");
+var h=s.querySelector(".hd");h.setAttribute("cx",p[0]);h.setAttribute("cy",p[1]);
+var w=s.querySelector(".wt");w.style.display=g.w?"":"none";w.setAttribute("cx",p[12]);w.setAttribute("cy",p[13]);
+});
+requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+home();
+</script>
+</body>
+</html>
